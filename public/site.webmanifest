@@ -1,0 +1,11 @@
+{
+  "name": "Mrithika K",
+  "short_name": "Mrithika",
+  "icons": [
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "theme_color": "#F2622E",
+  "background_color": "#F8F3EA",
+  "display": "standalone"
+}

@@ -1,0 +1,564 @@
+@import "tailwindcss";
+
+/* Theme switch is driven by data-theme on <html>, light by default. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --bg: #f8f3ea;
+  --bg-elev: #fffbf4;
+  --bg-sunk: #f0e8db;
+  --ink: #22201d;
+  --ink-soft: #5e564d;
+  --ink-faint: #74695e;
+  --line: rgb(34 32 29 / 0.12);
+  --line-strong: rgb(34 32 29 / 0.22);
+  --accent: #f2622e;
+  --accent-ink: #b9461c; /* orange that passes AA as small text on cream */
+  --accent-display: #e2541f; /* giant orange type: 3.35:1 on cream, passes AA for large text */
+  --accent-soft: rgb(242 98 46 / 0.14);
+  --teal: #5fa89a;
+  --teal-deep: #2c6a5f;
+  --teal-soft: rgb(95 168 154 / 0.18);
+  --ok: #2f9e6a;
+  --dot: #cfc3b0;
+  --glass: rgb(255 251 244 / 0.62);
+  --glass-line: rgb(255 255 255 / 0.7);
+  --shadow-tint: 60 40 20;
+  --header-h: 72px;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #1c1916;
+  --bg-elev: #26221e;
+  --bg-sunk: #161310;
+  --ink: #f3ece2;
+  --ink-soft: #c2b8ab;
+  --ink-faint: #9b9083;
+  --line: rgb(243 236 226 / 0.1);
+  --line-strong: rgb(243 236 226 / 0.2);
+  --accent: #f46a36;
+  --accent-ink: #ff8f61;
+  --accent-display: #f46a36;
+  --accent-soft: rgb(244 106 54 / 0.16);
+  --teal: #6db8a9;
+  --teal-deep: #9fd8cc;
+  --teal-soft: rgb(109 184 169 / 0.16);
+  --ok: #4cc488;
+  --dot: #3d3630;
+  --glass: rgb(38 34 30 / 0.6);
+  --glass-line: rgb(255 255 255 / 0.1);
+  --shadow-tint: 0 0 0;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elev: var(--bg-elev);
+  --color-sunk: var(--bg-sunk);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-teal: var(--teal);
+  --color-teal-deep: var(--teal-deep);
+  --color-teal-soft: var(--teal-soft);
+  --color-ok: var(--ok);
+  --color-glass: var(--glass);
+  --color-glass-line: var(--glass-line);
+
+  --font-display: "Rubik Variable", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --font-script: "Caveat", "Segoe Print", cursive;
+
+  --radius-card: 24px;
+  --radius-tile: 16px;
+
+  --shadow-soft: 0 1px 2px rgb(var(--shadow-tint) / 0.06), 0 12px 32px -12px rgb(var(--shadow-tint) / 0.18);
+  --shadow-lift: 0 2px 4px rgb(var(--shadow-tint) / 0.06), 0 28px 60px -20px rgb(var(--shadow-tint) / 0.32);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: var(--header-h);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    transition: background-color 0.4s var(--ease-out-expo), color 0.4s var(--ease-out-expo);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #22201d;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Blueprint dot grid used behind sections (static, cheap). */
+  .dot-grid {
+    background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+
+  .glass {
+    background: var(--glass);
+    border: 1px solid var(--glass-line);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.35),
+      0 10px 30px -12px rgb(var(--shadow-tint) / 0.3);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+  }
+
+  .sr-only-focusable:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Timeline (see components/experience/Experience.tsx) ---------- */
+.tl-dot {
+  position: relative;
+  height: 14px;
+  width: 14px;
+  border-radius: 9999px;
+  border: 2px solid var(--line-strong);
+  background: var(--bg);
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tl-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid var(--accent);
+  opacity: 0;
+}
+.is-reached .tl-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.25);
+}
+.is-reached .tl-ring {
+  animation: tl-pulse 1.4s cubic-bezier(0.16, 1, 0.3, 1) 2;
+}
+@keyframes tl-pulse {
+  0% { transform: scale(0.5); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ---------- Code streams behind the hero card (see components/hero/CodeStreams.tsx) ---------- */
+.cs {
+  /* Soft fade on every edge, strongest on the left so it never sits behind the headline. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, #000 34%, #000 82%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-composite: intersect;
+}
+@media (max-width: 1023px) {
+  .cs {
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 40%, transparent 100%);
+  }
+}
+.cs-lane {
+  position: relative;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  line-height: 1;
+  color: color-mix(in srgb, var(--ink) calc(var(--a) * 100%), transparent);
+}
+.cs-lane[data-depth="front"] { --a: 0.38; font-size: 15px; }
+.cs-lane[data-depth="mid"] { --a: 0.22; font-size: 12px; filter: blur(0.6px); }
+.cs-lane[data-depth="back"] { --a: 0.14; font-size: 10.5px; filter: blur(1.4px); }
+[data-theme="dark"] .cs-lane[data-depth="front"] { --a: 0.3; }
+[data-theme="dark"] .cs-lane[data-depth="mid"] { --a: 0.2; }
+[data-theme="dark"] .cs-lane[data-depth="back"] { --a: 0.12; }
+
+.cs-track {
+  display: flex;
+  width: max-content;
+  animation-name: cs-scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.cs[data-play="false"] .cs-track { animation-play-state: paused; }
+.cs-run-set { display: flex; }
+.cs-snip { padding-right: 3.2em; transition: color 0.3s ease, text-shadow 0.3s ease; }
+.cs-k { color: color-mix(in srgb, var(--accent) calc(var(--a) * 160%), transparent); }
+.cs-s { color: color-mix(in srgb, var(--teal) calc(var(--a) * 190%), transparent); }
+.cs-c { color: color-mix(in srgb, var(--ink-faint) calc(var(--a) * 110%), transparent); }
+
+/* "Executing" line: briefly full orange with a soft glow. */
+.cs-snip.cs-run,
+.cs-snip.cs-run * {
+  color: var(--accent);
+  text-shadow: 0 0 14px rgb(242 98 46 / 0.55);
+}
+
+.cs-typer {
+  position: absolute;
+  left: 58%;
+  top: calc(100% + 0.9em);
+  font-size: 14px;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: opacity 0.6s ease;
+}
+.cs-typer[data-state="idle"] { opacity: 0; }
+.cs-typer[data-state="typing"] { opacity: 1; }
+.cs-typer[data-state="fade"] { opacity: 0; }
+.cs-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--accent);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes cs-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Reduced motion: lanes sit still (no loop), no glow. */
+@media (prefers-reduced-motion: reduce) {
+  .cs-track { animation: none !important; transform: translate3d(-18%, 0, 0); }
+}
+
+/* ---------- Project covers (see components/work/Cover.tsx) ---------- */
+/* Zero-specificity default so per-animation origins (bottom, left) still win. */
+:where(.cover svg *) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.cover[data-play="false"] svg * {
+  animation-play-state: paused !important;
+}
+.cv-pulse { animation: cv-pulse 2.4s ease-in-out infinite; }
+.cv-pulse-soft { animation: cv-pulse-soft 2.8s ease-in-out infinite; }
+.cv-dash { stroke-dasharray: 14 86; animation: cv-dash 2.2s linear infinite; }
+.cv-draw { stroke-dasharray: 1; stroke-dashoffset: 0; animation: cv-draw 4.5s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+.cv-ring { animation: cv-ring 4s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+.cv-grow { transform-origin: bottom; animation: cv-grow 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+.cv-type { transform-origin: left; animation: cv-type 4s steps(14) infinite; }
+.cv-row { animation: cv-row 4.2s ease-out infinite; }
+.cv-rain { animation: cv-rain 1.2s linear infinite; }
+.cv-road { animation: cv-road 1s linear infinite; }
+.cv-water { animation: cv-water 3.2s ease-in-out infinite; }
+.cv-sway { animation: cv-sway 5s ease-in-out infinite; }
+.cv-spin-slow { animation: cv-spin 24s linear infinite; }
+.cv-drive-a { animation: cv-drive-a 4.2s linear -2.1s infinite; }
+.cv-drive-b { animation: cv-drive-b 3.1s linear -0.9s infinite; }
+.cv-drive-c { animation: cv-drive-c 4.8s linear -3.4s infinite; }
+
+@keyframes cv-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.45); opacity: 0.65; } }
+@keyframes cv-pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
+@keyframes cv-dash { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes cv-draw { 0% { stroke-dashoffset: 1; } 55%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
+@keyframes cv-ring { 0% { stroke-dashoffset: 100; } 60%, 100% { stroke-dashoffset: 0; } }
+@keyframes cv-grow { 0% { transform: scaleY(0.1); } 40%, 85% { transform: scaleY(1); } 100% { transform: scaleY(0.1); } }
+@keyframes cv-type { 0% { transform: scaleX(0); } 45%, 90% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+@keyframes cv-row { 0% { opacity: 0; transform: translateX(-10px); } 18%, 88% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; } }
+@keyframes cv-rain { from { transform: translate(0, 0); } to { transform: translate(-30px, 290px); } }
+@keyframes cv-road { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -22; } }
+@keyframes cv-water { 0%, 100% { transform: translateY(0); opacity: 0.35; } 50% { transform: translateY(-4px); opacity: 0.5; } }
+@keyframes cv-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes cv-spin { to { transform: rotate(270deg); } }
+/* Vehicles drive "toward the camera": they move down their lane and grow. */
+@keyframes cv-drive-a { from { transform: translate(150px, 10px) scale(0.45); } to { transform: translate(70px, 300px) scale(1.2); } }
+@keyframes cv-drive-b { from { transform: translate(200px, -20px) scale(0.45); } to { transform: translate(200px, 300px) scale(1.25); } }
+@keyframes cv-drive-c { from { transform: translate(250px, 30px) scale(0.45); } to { transform: translate(340px, 300px) scale(1.15); } }
+
+/* Reduced motion: no cover animation at all; every element rests in its fully drawn state. */
+@media (prefers-reduced-motion: reduce) {
+  .cover svg * { animation: none !important; }
+}
+
+/* ---------- Say Hey social card (see components/contact/SocialCard.tsx) ---------- */
+.say-card__half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  transition:
+    transform 0.32s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.32s ease;
+}
+.say-card__half--top {
+  left: 0;
+  background: var(--accent);
+}
+.say-card__half--bottom {
+  right: 0;
+  background: #e2541f;
+}
+[data-theme="dark"] .say-card__half--bottom {
+  background: #e65a25;
+}
+.say-card__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  color: #22201d;
+  transition: opacity 0.25s ease;
+}
+
+.say-card__link {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  color: inherit;
+  outline: none;
+}
+.say-card__pill {
+  position: absolute;
+  inset: 7px 3px;
+  border-radius: 9999px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.say-card__icon {
+  display: grid;
+  transition: color 0.2s ease;
+}
+.say-card__tip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 6px;
+  white-space: nowrap;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 5px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    translate 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.say-card__link:hover .say-card__pill,
+.say-card__link:focus-visible .say-card__pill {
+  opacity: 1;
+  transform: scale(1);
+}
+.say-card__link:hover .say-card__icon,
+.say-card__link:focus-visible .say-card__icon {
+  color: #22201d;
+  animation: say-bounce 0.4s linear;
+}
+.say-card__link:hover .say-card__tip,
+.say-card__link:focus-visible .say-card__tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+.say-card__link:focus-visible .say-card__pill {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+}
+
+/* Reveal: hover (real hover devices), keyboard focus inside, or the first touch tap. */
+@media (hover: hover) {
+  .say-card:hover .say-card__half--top { transform: translateY(-100%); opacity: 0.5; }
+  .say-card:hover .say-card__half--bottom { transform: translateY(100%); opacity: 0.5; }
+  .say-card:hover .say-card__label { opacity: 0; }
+  .say-card:hover { box-shadow: var(--shadow-lift); }
+}
+.say-card:focus-within .say-card__half--top,
+.say-card[data-open="true"] .say-card__half--top { transform: translateY(-100%); opacity: 0.5; }
+.say-card:focus-within .say-card__half--bottom,
+.say-card[data-open="true"] .say-card__half--bottom { transform: translateY(100%); opacity: 0.5; }
+.say-card:focus-within .say-card__label,
+.say-card[data-open="true"] .say-card__label { opacity: 0; }
+
+@keyframes say-bounce {
+  40% { transform: scale(1.4); }
+  60% { transform: scale(0.8); }
+  80% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Reduced motion: no split, no bounce. The halves simply fade out. */
+@media (prefers-reduced-motion: reduce) {
+  .say-card .say-card__half {
+    transform: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+  .say-card:is(:focus-within, [data-open="true"]) .say-card__half { opacity: 0 !important; }
+  .say-card .say-card__label { transition: opacity 0.2s ease !important; }
+  .say-card .say-card__icon { animation: none !important; }
+}
+@media (prefers-reduced-motion: reduce) and (hover: hover) {
+  .say-card:hover .say-card__half { opacity: 0 !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--bg-elev);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Keyframes used by small CSS-only loops. All are disabled under reduced motion below. */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes status-ping {
+  0% { transform: scale(1); opacity: 0.6; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+@keyframes glow-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes wheel {
+  0% { transform: translateY(0); opacity: 1; }
+  70% { transform: translateY(8px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+}
+
+.caret { animation: caret-blink 1s steps(1) infinite; }
+.status-ping { animation: status-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.drift { animation: drift var(--drift-dur, 6s) ease-in-out infinite; animation-delay: var(--drift-delay, 0s); }
+.glow-spin { animation: glow-spin 14s linear infinite; }
+.wheel-dot { animation: wheel 1.8s var(--ease-out-expo) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide the native cursor only when the custom cursor is mounted (fine pointer, motion allowed). */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* ---------- About: avatar to real photo (see components/about/About.tsx) ---------- */
+.about-swap__avatar { transition: opacity 0.7s ease, filter 0.7s ease, scale 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+.about-swap__photo {
+  opacity: 0;
+  scale: 1.08;
+  filter: blur(6px);
+  transition: opacity 0.7s ease, filter 0.7s ease, scale 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-swap[data-human="true"] .about-swap__photo { opacity: 1; scale: 1; filter: none; }
+.about-swap[data-human="true"] .about-swap__avatar { opacity: 0; scale: 0.96; filter: blur(4px); }
+/* Hint pill: a soft orange shimmer + glow until the image has been flipped once. */
+.about-swap[data-seen="false"] .about-swap__hint {
+  background-image: linear-gradient(110deg, transparent 30%, rgb(242 98 46 / 0.22) 50%, transparent 70%);
+  background-size: 250% 100%;
+  animation: hint-shimmer 2.6s ease-in-out infinite, hint-glow 2.6s ease-in-out infinite;
+}
+@keyframes hint-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+@keyframes hint-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(242 98 46 / 0); }
+  50% { box-shadow: 0 0 0 4px rgb(242 98 46 / 0.18); }
+}
+@media (hover: hover) {
+  .about-swap:hover .about-swap__photo { opacity: 1; scale: 1; filter: none; }
+  .about-swap:hover .about-swap__avatar { opacity: 0; scale: 0.96; filter: blur(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-swap__photo, .about-swap__avatar { scale: 1 !important; filter: none !important; transition: opacity 0.2s ease !important; }
+  .about-swap .about-swap__hint { animation: none !important; background-image: none !important; }
+}

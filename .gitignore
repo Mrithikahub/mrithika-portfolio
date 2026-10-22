@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules
+dist
+*.tsbuildinfo
+
+# Deploy and local tooling
+.vercel
+.claude
+.vscode
+.idea
+
+# Environment and local overrides
+.env
+.env.*
+*.local
+
+# Logs, caches, OS files
+*.log
+__pycache__
+.DS_Store
+Thumbs.db
