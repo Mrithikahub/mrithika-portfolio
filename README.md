@@ -74,9 +74,10 @@ public/                served as-is (images, certificates, favicons)
 
 ## Performance and accessibility
 
-Lighthouse on the production build: performance 98 on desktop and 81–82 on mobile, and 100 for accessibility, best practices and SEO on both.
+Lighthouse on the production build: performance 98 on desktop and 83–84 on mobile, and 100 for accessibility, best practices and SEO on both.
 
-- The hero's code loads first; the remaining sections ship as a separate chunk and mount one per idle frame.
+- The hero's code loads first; the remaining sections download once the hero is up and mount one per idle frame.
+- Phones skip the intro loader so the hero appears straight away.
 - Canvases and animated textures pause when off screen or in a background tab.
 - Everything honours `prefers-reduced-motion`: pinned scenes become static layouts, and loops and pulses stop.
 - Unknown URLs get `404.html` with a real 404 status on Vercel. (`npm run preview` falls back to the home page instead, so check the status code on the deployed site.)
